@@ -18,8 +18,12 @@ app.get('/usuario', (req, res) => {
 });
 //Post para crear data
 app.post('/usuario', (req, res) => {
-    
-    res.json('post usuario');
+
+  let body = req.body;
+
+    res.json({
+      persona: body
+    });
 });
 //Put para actualizar data
 app.put('/usuario/:id', (req, res) => {
@@ -37,6 +41,6 @@ app.delete('/usuario', (req, res) => {
 
 app.listen(3000, () => {
     console.log('Escuchando el puerto:',3000);
-    
+
 
 });
