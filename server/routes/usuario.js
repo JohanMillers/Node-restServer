@@ -15,7 +15,7 @@ app.get('/usuario', (req, res) => {
     let limite = req.query.limite || 5;
     limite = Number(limite);
 
-    Usuario.find({})
+    Usuario.find({}, 'nombre email role estado google img ')
             .skip(desde)
             .limit(limite)
             .exec( (err,usuarios) => {
@@ -92,8 +92,34 @@ app.put('/usuario/:id', (req, res) => {
 
 });
 //Delete para borrar data
-app.delete('/usuario', (req, res) => {
-    res.json('delete usuario');
+app.delete('/usuario/:id', (req, res) => {
+
+    let id = req.params.id;
+
+    Usuario.findByIdAndRemove(id,(err,usuarioBorrando) => {
+
+        if(err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        };
+
+        if(!usuarioBorrando) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message:'Usuario no encontrado'
+                }
+            });
+
+        }
+
+        res.json({
+            ok:true,
+            usuario: usuarioBorrando
+        });
+    });
 });
 
 module.exports = app;
